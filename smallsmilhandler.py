@@ -17,5 +17,23 @@ class SmallSMILHandler(ContentHandler):
                         'img': ['src', 'region', 'begin', 'dur'],
                         'audio': ['src', 'begin', 'dur'],
                         'textstream': ['src', 'region']}
+        
+        def startElement(self, name, attrs):
+                if name in self.dicc:
+                        dicc = {}
+                for item in self.dicc[name]:
+                        dicc[item] = attrs.get(item,"")
+                        diccname = {name: dicc}
+                        self.lista_etiquetas.append(diccname)
+
+        """
+        Devuelve la lista con las etiquetas encontradas
+        """
+        def get_tags(self):
+                return self.lista_etiquetas
+
+        if __name__ == "__main__":
+                print ("hola")
+        
 
         
