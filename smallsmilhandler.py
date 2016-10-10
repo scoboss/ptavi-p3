@@ -24,7 +24,7 @@ class SmallSMILHandler(ContentHandler):
                     'audio': ['src', 'begin', 'dur'],
                     'textstream': ['src', 'region']}
     """
-    el parsel lo llama cuando encuentra la etiqueta
+    El parsel lo llama cuando encuentra la etiqueta.
     """
     def startElement(self, name, attrs):
         if name in self.dic:
