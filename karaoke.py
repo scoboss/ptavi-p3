@@ -29,7 +29,7 @@ class KaraokeLocal(SmallSMILHandler):
         return linea
 
     """
-    Para pasar de smil a json.
+    Para pasar de smil a Json.
     Smil a Json con dump.
     Json a Smil con load.
     """
