@@ -1,6 +1,10 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
+"""
+Practica 3
+"""
+
 import sys
 import json
 from xml.sax import make_parser
