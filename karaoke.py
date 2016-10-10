@@ -6,7 +6,7 @@ import json
 from xml.sax import make_parser
 from xml.sax.handler import ContentHandler
 from smallsmilhandler import SmallSMILHandler
-from urllib.request import urlretrieve, urlcleanup
+import urllib
 
 
 class KaraokeLocal(SmallSMILHandler):
@@ -16,53 +16,51 @@ class KaraokeLocal(SmallSMILHandler):
         cHandler = SmallSMILHandler()
         parser.setContentHandler(cHandler)
         parser.parse(open(fichero))
-        self.lista_etiq = cHandler.get_tags()
+        self.datos = cHandler.get_tags()
 
     def __str__(self):
         line = " "
-        for dicc in self.lista_etiq:
-            llave = list(dic.keys())[0]
-            line = line + llave
-            for elemento in dicc[llave]:
-                value = dicc[llave][elemento]
-                if value:
-                    value = dicc[llave][elemento]
-                    linea = '\t' + elemento + '='+'"'+value+ '"'
-                    line = line + linea
-            line = line + '\n'
-        print (line)
+        for elem in self.datos:
+            linea = linea + elem[0]
+            atributos = elem[1].items()
+            for nombre, valor in atributos:
+                linea = linea + '\t' + nombre + '='+'"'+valor+ '"'
+            linea = linea + '\n'
+        return linea
 
-    def to_json(self, fichero, name=""):
-        lista_etiq_json = json.dumps(self.lista_etiq)
-        if not name:
-            name = fichero.split('.')[0] +'.json'
-        with open(name, 'w') as fichero_json:
-            json.dump(lista_etiq_json, fichero_json, sort_keys=True, indent=4)
+    def to_json(self, ficherosmil, nuevo=""):
+        if nuevo == '':
+            nuevo = ficherosmil.split('.')[0] +'.json'
+        with open(nuevo, 'w') as fichero_json:
+            json.dump(self.datos, fichero_json, sort_keys=True, indent=4)
 
     def do_local(self):
-        for dicc in self.lista_etiq:
-            llave = list(dic.keys())[0]
-            for elemento in dicc[llave]:
-                value = dicc[llave][elemento]
-            if value:
-                if (elemento == "src") and (value != "cancion.ogg"):
-                    URL = value
-                    filename = URL[URL.rfind("7") + 1:]
-                    data = urlretrieve(URL, filename)
-                    urlcleanup()
-                    dicc[llave][elemento] = data[0]
+        for elem in self.datos:
+            atributos = elem[1]
+            try:
+                url = atributos['src']
+                if url != "cancion.ogg":
+                    filename = url[url.rfriend("/") + 1:]
+                    data = urblib.request.urlretrieve(url, filename)
+                    atributos['src'] = "http://" + data[0]
+            except KeyError as e:
+                pass
+
+def get_fichero():
+    try:
+        fich = sys.argv[1]
+        return fich
+    except IndexError:
+        sys.exit("Usage: python3 karaoke.py file.smil.")
+    except FileNotFoundError:
+        sys.exit("Not file with this name")
+
 
 if __name__ == "__main__":
-    try:
-        fichero = sys.argv[1]
-    except IndexError:
-        sys.exit("Usage: python3 karaoke.py file.smil")
-    try:
-        obj_karaokelocal = KaraokeLocal(fichero)
-    except IOError:
-        sys.exit("Usage: python3 karaoke.py file.smil")
-        obj_karaokelocal.__str__()
-        obj_karaokelocal.to_json(fichero)
-        obj_karaokelocal.do_local()
-        obj_karaokelocal.to_json(fichero, 'local.json')
-        obj_karaokelocal.__str__()
+    fichero = get_fichero()
+    karaoke = KaraokeLocal(fichero)
+    print(karaoke)
+    karaoke.to_json(fichero)
+    karaoke.do_local()
+    karaoke.to_json(fichero, 'local.json')
+    print(karaoke)
