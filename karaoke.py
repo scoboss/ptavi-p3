@@ -28,6 +28,12 @@ class KaraokeLocal(SmallSMILHandler):
             linea = linea + '\n'
         return linea
 
+    """
+    Para pasar de smil a json.
+    Smil a Json con dump.
+    Json a Smil con load.
+    """
+
     def to_json(self, ficherosmil, nuevo=""):
         if nuevo == '':
             nuevo = ficherosmil.split('.')[0] + '.json'
@@ -45,6 +51,7 @@ class KaraokeLocal(SmallSMILHandler):
                     atributos['src'] = "http://" + data[0]
             except KeyError as e:
                 pass
+
 
 def get_fichero():
     try:
