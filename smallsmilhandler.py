@@ -35,12 +35,12 @@ class SmallSMILHandler(ContentHandler):
     """
     def get_tags(self):
         return self.lista
-    
+
     """
     Creamos una lista segun lo que va encontrando
     """
     def crear_lista(self, nombre, atributos):
-        etiqueta =[]
+        etiqueta = []
         etiqueta.append(nombre)
         etiqueta.append(atributos)
         self.lista.append(etiqueta)
@@ -50,6 +50,7 @@ class SmallSMILHandler(ContentHandler):
 """
 Para que imprima la lista
 """
+
 
 def print_list(list):
     for element in list:
@@ -61,4 +62,4 @@ if __name__ == "__main__":
     cHandler = SmallSMILHandler()
     parser.setContentHandler(cHandler)
     parser.parse(open('karaoke.smil'))
-    print_list (cHandler.get_tags())
+    print_list(cHandler.get_tags())
