@@ -3,10 +3,13 @@
 
 """
 Practica 3
-
 """
 from xml.sax.handler import ContentHandler
 from xml.sax import make_parser
+
+"""
+Creamos clase
+"""
 
 
 class SmallSMILHandler(ContentHandler):
