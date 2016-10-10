@@ -20,7 +20,9 @@ class SmallSMILHandler(ContentHandler):
                     'img': ['src', 'region', 'begin', 'dur'],
                     'audio': ['src', 'begin', 'dur'],
                     'textstream': ['src', 'region']}
-
+    """
+    el parsel lo llama cuando encuentra la etiqueta
+    """
     def startElement(self, name, attrs):
         if name in self.dic:
             self.atributos = {}
@@ -33,7 +35,10 @@ class SmallSMILHandler(ContentHandler):
     """
     def get_tags(self):
         return self.lista
-
+    
+    """
+    Creamos una lista segun lo que va encontrando
+    """
     def crear_lista(self, nombre, atributos):
         etiqueta =[]
         etiqueta.append(nombre)
@@ -41,6 +46,10 @@ class SmallSMILHandler(ContentHandler):
         self.lista.append(etiqueta)
         return self.lista
 
+
+"""
+Para que imprima la lista
+"""
 
 def print_list(list):
     for element in list:
