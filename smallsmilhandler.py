@@ -14,7 +14,7 @@ class SmallSMILHandler(ContentHandler):
     Inicializamos.
     """
     def __init__(self):
-        self.lista_etiquetas = []
+        self.lista = []
         self.dic = {'root-layout': ['width', 'height', 'background-color'],
                     'region': ['id', 'top', 'bottom', 'left', 'right'],
                     'img': ['src', 'region', 'begin', 'dur'],
@@ -23,21 +23,33 @@ class SmallSMILHandler(ContentHandler):
 
     def startElement(self, name, attrs):
         if name in self.dic:
-            dicc = {}
-        for item in self.dic[name]:
-            dicc[item] = attrs.get(item, "")
-        diccname = {name: dicc}
-        self.lista_etiquetas.append(diccname)
+            self.atributos = {}
+            for item in self.dic[name]:
+                self.atributos[item] = attrs.get(item, "")
+            self.crear_lista(name, self.atributos)
 
     """
     Devuelve la lista con las etiquetas encontradas
     """
     def get_tags(self):
-        return self.lista_etiquetas
+        return self.lista
+
+    def crear_lista(self, nombre, atributos):
+        etiqueta =[]
+        etiqueta.append(nombre)
+        etiqueta.append(atributos)
+        self.lista.append(etiqueta)
+        return self.lista
+
+
+def print_list(list):
+    for element in list:
+        print (element)
+
 
 if __name__ == "__main__":
     parser = make_parser()
     cHandler = SmallSMILHandler()
     parser.setContentHandler(cHandler)
     parser.parse(open('karaoke.smil'))
-    print (cHandler.get_tags())
+    print_list (cHandler.get_tags())
